@@ -11,12 +11,13 @@ import java.util.stream.Stream;
 public class Solution {
 
   private static final char QUEEN = 'Q';
+  private static final int[] EMPTY_ARRAY = new int[0];
+  private static final String EMPTY_ROW = ".".repeat(20);
 
   public List<List<String>> solveNQueens(int n) {
-    if (n < 1) throw new IllegalArgumentException("number of queens must be greater than 0");
-    if (n == 2 || n == 3) return List.of();
+    if (n < 0) throw new IllegalArgumentException("number of queens must be positive");
 
-    return solve(new int[0], n).map(it -> toString(it, n)).toList();
+    return solve(EMPTY_ARRAY, n).map(it -> toString(it, n)).toList();
   }
 
   private static Stream<int[]> solve(int[] rows, int n) {
@@ -36,9 +37,7 @@ public class Solution {
       var left = newCol - (rowCount - row);
       var right = newCol + (rowCount - row);
 
-      if (col == left || col == newCol || col == right) {
-        return false;
-      }
+      if (col == left || col == newCol || col == right) return false;
     }
 
     return true;
@@ -52,7 +51,8 @@ public class Solution {
 
   private static List<String> toString(int[] rows, int n) {
     return Arrays.stream(rows).mapToObj(col -> {
-      var builder = new StringBuilder(".".repeat(n));
+      var builder = new StringBuilder(EMPTY_ROW);
+      builder.setLength(n);
       builder.setCharAt(col, QUEEN);
       return builder.toString();
     }).toList();

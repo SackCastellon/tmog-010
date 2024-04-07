@@ -19,6 +19,7 @@ class SolutionTest {
 
   static Stream<Arguments> queensN() {
     return Stream.of(
+        arguments(0, 1),
         arguments(1, 1),
         arguments(2, 0),
         arguments(3, 0),
@@ -34,7 +35,9 @@ class SolutionTest {
         arguments(13, 73712),
         arguments(14, 365596),
         arguments(15, 2279184),
-        arguments(16, 14772512)
+        arguments(16, 14772512),
+        arguments(17, 95815104),
+        arguments(18, 666090624)
     );
   }
 
@@ -114,9 +117,13 @@ class SolutionTest {
 
   @ParameterizedTest
   @MethodSource
-  void queensN(int n, int expected) {
+  void queensN(int n, int resultCount) {
     var result = solution.solveNQueens(n);
 
-    assertThat(result).hasSize(expected);
+    assertThat(result).hasSize(resultCount).allSatisfy(rows ->
+        assertThat(rows).hasSize(n).allSatisfy(row ->
+            assertThat(row).hasSize(n)
+        )
+    );
   }
 }
